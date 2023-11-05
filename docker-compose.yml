@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  consumer:
+    build:
+      context: .
+    volumes:
+      - ./src/service:/service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links:
+      - rabbitmq
+    restart: on-failure
+    environment:
+      BROKER_HOST: rabbitmq
+      QUEUE_NAME: test
+
+  rabbitmq:
+    image: rabbitmq:3.12.8-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 2s
+      timeout: 3s
+      retries: 30
