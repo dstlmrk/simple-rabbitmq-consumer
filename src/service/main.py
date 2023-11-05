@@ -3,13 +3,25 @@ import os
 
 from consumer import QueueConsumer
 
-BROKER_HOST = os.environ["BROKER_HOST"]
-QUEUE_NAME = os.environ["QUEUE_NAME"]
+BROKER_PARAMS = dict(
+    host=os.environ["BROKER_HOST"],
+    queue=os.environ["BROKER_QUEUE"],
+)
+DB_PARAMS = dict(
+    host=os.environ["DB_HOST"],
+    dbname=os.environ["DB_NAME"],
+    user=os.environ["DB_USER"],
+    password=os.environ["DB_PASSWORD"],
+)
 
 
 if __name__ == "__main__":
     try:
-        consumer = QueueConsumer(BROKER_HOST, QUEUE_NAME)
+        consumer = QueueConsumer(
+            broker_params=BROKER_PARAMS,
+            db_params=DB_PARAMS,
+            test_mode=False,
+        )
         consumer.run()
     except Exception:
         logging.error("Unexpected error")

@@ -10,12 +10,19 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      db:
+        condition: service_healthy
     links:
       - rabbitmq
+      - db
     restart: on-failure
     environment:
       BROKER_HOST: rabbitmq
-      QUEUE_NAME: test
+      BROKER_QUEUE: test
+      DB_HOST: db
+      DB_NAME: parameters
+      DB_USER: user_name
+      DB_PASSWORD: user_password
 
   rabbitmq:
     image: rabbitmq:3.12.8-management-alpine
@@ -27,3 +34,19 @@ services:
       interval: 2s
       timeout: 3s
       retries: 30
+
+  db:
+    image: postgres:16.0-alpine3.18
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "parameters"
+      POSTGRES_USER: "user_name"
+      POSTGRES_PASSWORD: "user_password"
+    volumes:
+      - ./db/fixtures/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

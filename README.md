@@ -9,6 +9,12 @@ We need to extract the values under the keys `legacy` and `attributes` from the 
 I use the latest version of the simple message broker RabbitMQ based on Alpine Linux distribution (because of size).
 If you need inspect the broker, visit `http://localhost:15672`. The queue is open on the default port `5672`.
 
+## Postgres
+
+I created two simple tables. In the first of them are offers stored. I expect that the number of legacy items
+is static. The second table stores attributes. Maybe there could be better to store identification of products
+than offers. But it depends on the data.
+
 ## Disclaimer
 
 This code is not prepared for production environment. I don't care secured credentials, global configuration,
@@ -20,9 +26,12 @@ optimal settings of broker and database for real-world load, etc.
 - Write more tests to verify the functionality of the broker (messages are read only once etc.)
 - Think about [asynchronous code](https://aio-pika.readthedocs.io/en/latest/rabbitmq-tutorial/1-introduction.html)
 - Add pre-commit hook and don't use `ruff --fix . && isort . && black .` :)
+- Better test parametrization (do not load all data in one test)
+- Test broker and database separately
+- Write idempotent tests (wrap up them by transactions)
 
 ## How to use
 
 1. Install docker and docker-compose.
 2. Then run `docker compose up`.
-3. For testing on your machine, install dev requirements from `requirements.dev.txt` and run `pytest`.
+3. For testing on your machine, install and run `pytest`.

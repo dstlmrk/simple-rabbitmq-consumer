@@ -12,11 +12,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -r requirements.dev.txt
+          pip install -r requirements.txt
+      - name: Start containers
+        run: docker compose up -d
       - name: Test with pytest
         run: |
           pip install pytest
           python -m pytest
+      - name: Stop containers
+        if: always()
+        run: docker compose down
   ruff:
     runs-on: ubuntu-latest
     steps:
