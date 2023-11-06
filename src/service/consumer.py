@@ -1,4 +1,5 @@
 import json
+import logging
 
 from utils import connect_broker, connect_database
 
@@ -14,7 +15,7 @@ class QueueConsumer:
         """
         Close all connections
         """
-        print("Stop consuming...")
+        logging.info("Stop consuming...")
         self.broker_connection.close()
         self.cursor.close()
         self.db_connection.close()
@@ -53,7 +54,7 @@ class QueueConsumer:
         Start consuming from the message broker. For testing purposes,
         the method enables to stop consuming when the queue is empty.
         """
-        print("Start consuming...")
+        logging.info("Start consuming...")
         for method, _, body in self.channel.consume(
             queue=self.queue, auto_ack=False, inactivity_timeout=1
         ):

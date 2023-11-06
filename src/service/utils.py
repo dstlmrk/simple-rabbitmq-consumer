@@ -17,7 +17,6 @@ def connect_database(host: str, dbname: str, user: str, password: str) -> tuple:
     """
     Connect to the Postgres database. Returns connection and cursor.
     """
-    print("connection db")
     connection = psycopg2.connect(
         host=host, dbname=dbname, user=user, password=password
     )
