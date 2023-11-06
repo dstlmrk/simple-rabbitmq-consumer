@@ -37,5 +37,6 @@ optimal settings of broker and database for real-world load, etc.
 
 1. Install docker and docker-compose
 2. Then run `docker compose up`
-3. For testing on your machine, install and run `pytest` (step 2 is required)
+3. For testing on your machine, install and run `pytest`
+   - Step 2 could be `docker compose up -d rabbitmq db`
 4. Finally `docker compose down`
